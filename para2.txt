@@ -1,0 +1,49 @@
+uniqueID	ecbef7c6-ef52-41de-86c2-9cdff3cbf254
+isRenewal	0
+reuseFlag	0
+checkIsOffRenewal	1
+areaCode	33000000
+cityCode	33010000
+lastBIPolicyNo
+ccaFlag
+userPriceConf	1
+calInfoRollPos
+amount050200Min	203033.88
+amount050200Max	248152.52
+changeItemKind
+seatCount	5
+useYears	1
+TZFlag
+biselect
+ciselect	1
+BM_flag	0
+isNeedCal	0
+EADFlag
+eadRenewalFlag
+eadsum	0
+isRevoke	00
+backMobileNo
+isNeedCompare	0
+checkEmail
+checkMobile
+sendEmail
+sendMobile
+entryID
+sumPremium
+premiumCI
+licenseFlag	1
+rapidRenewalFlag	0
+bonusEndDate
+haveOwnerSelect
+ownerChangeDateVal
+isHaveLoanFlag
+loanNameVal
+packageName	EconomyPackage
+startDateCI	2017/02/28
+startHourCI	0
+endDateCI	2018/02/27
+endHourCI	24
+eadbuystyle
+insuredcopies
+othernumber
+othercopies"
