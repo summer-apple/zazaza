@@ -9,10 +9,10 @@ mainReqDto.isRenewal	0
 mainReqDto.reuseFlag	0
 mainReqDto.areaCode	33000000
 mainReqDto.cityCode	33010000
-uniqueID	ecbef7c6-ef52-41de-86c2-9cdff3cbf254
+uniqueID	9bc6a4ae-edef-49ec-94cd-4c17973b6998
 licenseNo	浙A8ST85
 carReqDto.countryNature	02
-serverDateTime	2017/02/27
+serverDateTime	2017/02/28
 carReqDto.frameNoFlag	1
 carReqDto.vinNoFlag
 carReqDto.engineNoFlag	1
@@ -31,14 +31,14 @@ jyParentVehName	请选择
 jyFgwCode	请选择
 carReqDto.aliasName
 carReqDto.seatcount	5
-mainReqDto.startDateBI	2017/02/28
+mainReqDto.startDateBI	2017/03/01
 mainReqDto.startHourBI	0
 startHourBIReal	0
-mainReqDto.endDateBI	2018/02/27
+mainReqDto.endDateBI	2018/02/28
 mainReqDto.endHourBI	24
 carReqDto.haveOwnerChange
 carReqDto.ownerChangeDate
-insuredReqDtos[1].insuredname	夏栋
+insuredReqDtos[1].insuredname	阿斯蒂芬
 insuredReqDtos[1].identifytype	01
 insuredReqDtos[1].changeIdentifyFlag
 insuredReqDtos[1].identifyno	330621199209263517
@@ -46,12 +46,12 @@ insuredReqDtos[1].insuredSex	1
 insuredReqDtos[1].birthday	1992/09/26
 insuredReqDtos[1].age	24
 insuredReqDtos[1].changeMobileFlag
-insuredReqDtos[1].mobile	15757135741
+insuredReqDtos[1].mobile	15757153567
 insuredReqDtos[1].changeEmailFlag
-insuredReqDtos[1].email	summer.okay@gmail.com"""
+insuredReqDtos[1].email	asdf@163.com"""
 
 
-get_all_price="""uniqueID	ecbef7c6-ef52-41de-86c2-9cdff3cbf254
+get_all_price="""uniqueID	9bc6a4ae-edef-49ec-94cd-4c17973b6998
 isRenewal	0
 reuseFlag	0
 checkIsOffRenewal	1

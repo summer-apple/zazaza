@@ -1,8 +1,10 @@
-import requests
-import time
 import datetime
+import time
 import uuid
-import param
+
+import requests
+
+from baoxian import param
 
 
 class Spider:
@@ -33,7 +35,7 @@ class Spider:
          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36')
     ]
 
-    def __init__(self,plate_no,model,vin,engine_no,register_date,issue_date,ownner,id_card,mobile,email=''):
+    def __init__(self,plate_no,model,vin,engine_no,register_date,issue_date,ownner,id_card,mobile,email):
         self.sn = requests.session()
         self.sn.headers = Spider.HEADERS
         self.uniqueID = str(uuid.uuid1())
@@ -51,6 +53,14 @@ class Spider:
 
 
     def touch(self):
+        # resp = self.sn.get('http://www.epicc.com.cn/newecar/CreateImageNew?next=0.4435600991413946&randName=registerRandPhone&uuid=')
+        # print(resp.status_code)
+        #
+        # origin_url='http://www.epicc.com.cn/newecar/proposal/normalProposal'
+        # origin_param = Spider.init_param(param.origin_page)
+        # resp = self.sn.post(origin_url,data=origin_param)
+        # print(resp.status_code)
+
         touch_param = {'vehicleModelsh':'', 'uniqueID':self.uniqueID}
         touch_resp = self.sn.post(Spider.TOUCH_URL,data=touch_param)
         print(touch_resp.status_code)
@@ -87,7 +97,7 @@ class Spider:
 
     def pre_for_bi(self):
         data = Spider.init_param(param.pre_for_bi)
-        data['uniqueID'] = self.uniqueID
+        #data['uniqueID'] = self.uniqueID
 
         data['licenseNo'] = self.plate_no
         data['carReqDto.frameno'] = self.vin
@@ -110,7 +120,7 @@ class Spider:
     def get_all_price(self):
 
         data = Spider.init_param(param.get_all_price)
-        data['uniqueID'] = self.uniqueID
+        #data['uniqueID'] = self.uniqueID
 
 
         resp2 = self.sn.post(Spider.PRICE_URL, data=data)
@@ -190,7 +200,7 @@ if __name__ == '__main__':
                     ownner='啦啦啦',
                     id_card='330621199209263517',
                     mobile='15757135743',
-                    email='')
+                    email='asdf@163.com')
 
     print(spider.uniqueID)
 
@@ -203,4 +213,5 @@ if __name__ == '__main__':
 
 
     spider.pre_for_bi()
+    spider.get_all_price()
 
