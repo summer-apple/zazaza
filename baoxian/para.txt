@@ -18,7 +18,7 @@ carReqDto.vinNoFlag
 carReqDto.engineNoFlag	1
 mainReqDto.packageType
 mainReqDto.entryID
-carReqDto.frameno	1C4NJDCB2FD167839
+carReqDto.frameno	0000000000
 carReqDto.engineno	FD167839
 carReqDto.enrolldate	2015/04/16
 carReqDto.vehicle_modelsh	指南者COMPASS 2.4L越野车
