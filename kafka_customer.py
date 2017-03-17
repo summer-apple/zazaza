@@ -12,6 +12,11 @@ balanced_consumer = topic.get_balanced_consumer(
   auto_commit_enable=True,
   zookeeper_connect='127.0.0.1:2181'
 )
+
+
+
+
+
 # 消费信息
 for message in balanced_consumer:
   if message is not None:
