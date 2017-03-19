@@ -39,13 +39,20 @@ class ExcelParser:
 
         for tb_name, ws in [(sn,self.wb[sn]) for sn in tb_names]:
 
-            sql = "create table %s (" % tb_name
+            sql = "create table %s (" % tb_name.lower()
 
-            for row in list(ws.rows)[3:]:
+
+            pks = list()
+
+            for row in list(ws.rows)[2:]:
                 column_name, data_type, length, nn, ai, pk, default, comment, uindex1, uindex2, uindex3, index1, index2, index3 = [cell.value for cell in row]
                 print(column_name, data_type, length, nn, ai, pk, default, comment, uindex1, uindex2, uindex3, index1, index2, index3)
+
+
+
+
                 if column_name is not None:
-                    sql = sql + column_name +' '
+                    sql = sql + column_name.lower() +' '
 
                     # length
                     if data_type.lower() in ('char','varchar','text','decimal'):
@@ -59,21 +66,29 @@ class ExcelParser:
 
                     # auto increase
                     if ai is not None:
-                        sql = sql + 'auto increase '
-
-                    # pk
-                    if pk is not None:
-                        sql = sql + 'primary key '
+                        sql = sql + 'auto_increment '
 
                     # default
                     if default is not None:
-                        sql = sql + "default '" + default+"' "
+                        if data_type.lower() in ['int','float','double']:
+                            sql = sql + "default " + str(default)+" "
+                        else:
+                            sql = sql + "default '" + str(default)+"' "
+
 
                     # comment
                     if comment is not None:
                         sql = sql + "comment '"+ comment+"'"
 
                     sql = sql + ','
+
+                    # pk
+                    if pk is not None:
+                        pks.append(column_name)
+                        #sql = sql + 'primary key '
+
+            if len(pks)>0:
+                sql = sql+'primary key (%s)' % str(pks)[1:-1].replace("'","")+','
 
             sql = sql[:-1]+")"
 
