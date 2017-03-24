@@ -5,11 +5,8 @@ class Calculator(object):
 
 
   def double(self, number,n2):
-    while True:
-        print('aaa')
-        if number >n2:
-            break
+    return 2 * number*n2
 
 if __name__ == '__main__':
     c = Calculator()
-    c.double(1,4)
+    fire.Fire(c.double)
