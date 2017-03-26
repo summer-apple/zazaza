@@ -7,34 +7,11 @@ import random
 
 import time
 
-class PythonOrgSearch(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-
-    def test_search_in_python_org(self):
-        driver = self.driver
-        driver.get("http://www.python.org")
-        self.assertIn("Python", driver.title)
-        elem = driver.find_element_by_name("q")
-        elem.send_keys("pycon")
-        elem.send_keys(Keys.RETURN)
-        assert "No results found." not in driver.page_source
-
-    def tearDown(self):
-        pass
-        #self.driver.close()
-
-
-
-
-
-
-
 class Taobao():
 
     def __init__(self):
         self.driver = webdriver.Chrome()
-        self.driver.set_window_size('1920','1280')
+        self.driver.set_window_size(1920,1080)
         self.sum = 0
 
 
@@ -54,6 +31,7 @@ class Taobao():
         self.driver.find_element_by_id('TPL_password_1').send_keys('Xdddt3568a')
 
         self.driver.find_element_by_id('J_SubmitStatic').click()
+        time.sleep(10)
         self.driver.get('https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm')
 
     def all_order(self):
@@ -65,7 +43,9 @@ class Taobao():
             cls = next_page_btn.get_attribute('class').split(' ')
             if 'pagination-disabled' in cls:
                 break
-
+            self.driver.execute_script('arguments[0].scrollIntoView(false);',next_page_btn)
+            #self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+            time.sleep(3)
             next_page_btn.click()
 
 
@@ -73,7 +53,7 @@ class Taobao():
 
     def parse_page(self):
 
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(30)
         order_list = self.driver.find_elements_by_css_selector('.js-order-container tbody tr td:nth-child(5) .price-mod__price___1BVLR > p > strong > span:nth-child(2)')
 
         for o in order_list:
