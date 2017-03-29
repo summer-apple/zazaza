@@ -33,7 +33,7 @@ DOWNLOAD_DELAY = 3
 # CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -46,8 +46,8 @@ DEFAULT_REQUEST_HEADERS = {
 'Cache-Control':'max-age=0',
 'Connection':'keep-alive',
 'Host':'www.topit.me',
-'Referer':'http://www.topit.me/user/255686?p=33',
 'Upgrade-Insecure-Requests':1,
+'Referer':'http://www.topit.me/user/255686',
 'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36'
 }
 
@@ -73,7 +73,8 @@ DEFAULT_REQUEST_HEADERS = {
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'topitme.pipelines.TopitmePipeline': 300,
-    'topitme.pipelines.MyImagesPipeline': 400
+    'scrapy.pipelines.images.ImagesPipeline':400
+    #'topitme.pipelines.MyImagesPipeline': 400
 }
 IMAGES_STORE = 'media'
 

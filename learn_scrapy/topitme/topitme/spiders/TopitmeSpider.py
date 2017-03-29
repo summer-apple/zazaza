@@ -1,13 +1,14 @@
 import scrapy
 from scrapy.selector import Selector
-from scrapy.spider import CrawlSpider
+from scrapy.spider import CrawlSpider,BaseSpider
 from scrapy.contrib.linkextractors import LinkExtractor
 from scrapy.contrib.spiders import CrawlSpider,Rule
 from bs4 import BeautifulSoup
 import re
+from scrapy.http import Request
 from ..items import TopitmeItem,ImageItem
 
-class TopitmeSpider(CrawlSpider):
+class TopitmeSpider(BaseSpider):
     name = 'topitme'
     allowed_domains = ['topit.me']
     start_urls = ['http://www.topit.me/user/255686']
@@ -15,7 +16,11 @@ class TopitmeSpider(CrawlSpider):
     #     Rule(LinkExtractor(allow=r'http://www.topit.me/user/255686*'),
     #          callback='parse', follow=True),
     # )
-
+    # cookies = None
+    #
+    # def start_requests(self):
+    #     return [Request(url,meta={'cookiejar':1},callback=self.parse) for url in start_urls]
+    #
 
     def parse(self,response):
         next_page = response.xpath('//a[@id="page-next"]/@href').extract()[0]
