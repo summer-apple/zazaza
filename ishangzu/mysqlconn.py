@@ -12,6 +12,7 @@ class MySQLHelper():
                   }
 
         self.cnn = pymysql.connect(**self.config)
+        # 结果作为字典形式返回，即带上字段名
         self.cur = self.cnn.cursor(pymysql.cursors.DictCursor)
 
     def execute(self, sql, args=[]):
@@ -122,7 +123,7 @@ if __name__ == '__main__':
 61	获取点击数量	URL	列表页_区域_江干区_下沙江滨	xiashajiangbin
 62	获取点击数量	URL	列表页_区域_江干区_四季青	sijiqing
 63	获取点击数量	URL	列表页_区域_江干区_三里亭	sanliting
-64	获取点击数量	URL	列表页_区域_江干区_钱江新城	qiangjiangxincheng
+64	获取点击数量	URL	列表页_区域_江干区_钱江新城	qianjiangxincheng
 65	获取点击数量	URL	列表页_区域_江干区_彭埠	pengbu
 66	获取点击数量	URL	列表页_区域_江干区_南肖埠	nanxiaobu
 67	获取点击数量	URL	列表页_区域_江干区_九堡	jiubao
@@ -171,7 +172,7 @@ if __name__ == '__main__':
 110	获取点击数量	URL	列表页_区域_萧山区_宁围	ningwei
 111	获取点击数量	URL	列表页_区域_萧山区_蜀山	shushan
 112	获取点击数量	URL	列表页_区域_全余杭区_全余杭区	yuhang
-113	获取点击数量	URL	列表页_区域_余杭区_闲林	xianlin
+113	获取点击数量	URL	列表页_区域_余杭区_闲林	xianlin1
 114	获取点击数量	URL	列表页_区域_余杭区_未来科技城	weilaikejicheng
 115	获取点击数量	URL	列表页_区域_余杭区_老余杭	laoyuhang
 116	获取点击数量	URL	列表页_区域_余杭区_临平	linping
@@ -191,7 +192,7 @@ if __name__ == '__main__':
 130	获取点击数量	URL	列表页_区域_黄浦区_黄浦滨江	huangpubinjiang
 131	获取点击数量	URL	列表页_区域_黄浦区_世博滨江	shibobinjiang
 132	获取点击数量	URL	列表页_区域_黄浦区_外滩	waitan
-133	获取点击数量	URL	列表页_区域_黄浦区_昆山	kunshan
+133	获取点击数量	URL	列表页_区域_黄浦区_昆山	kunshan1
 134	获取点击数量	URL	列表页_区域_黄浦区_陆家浜路	lujiabanglu
 135	获取点击数量	URL	列表页_区域_徐汇区_全徐汇区	xuhui
 136	获取点击数量	URL	列表页_区域_徐汇区_徐家汇	xujiahui
@@ -214,7 +215,7 @@ if __name__ == '__main__':
 153	获取点击数量	URL	列表页_区域_徐汇区_湖南路	hunanlu
 154	获取点击数量	URL	列表页_区域_徐汇区_肇嘉浜路	zhaojiabanglu
 155	获取点击数量	URL	列表页_区域_徐汇区_龙华	longhua
-156	获取点击数量	URL	列表页_区域_徐汇区_滨江	binjiang
+156	获取点击数量	URL	列表页_区域_徐汇区_滨江	binjiang01
 157	获取点击数量	URL	列表页_区域_长宁区_全长宁区	changning
 158	获取点击数量	URL	列表页_区域_长宁区_虹桥	hongqiao
 159	获取点击数量	URL	列表页_区域_长宁区_古北	gubei
@@ -467,7 +468,7 @@ if __name__ == '__main__':
 406	获取点击数量	URL	列表页_区域_秦淮区_集庆路	jiqinglu
 407	获取点击数量	URL	列表页_区域_秦淮区_三山街	sanshanjie
 408	获取点击数量	URL	列表页_区域_建邺区_全建邺区	jianye
-409	获取点击数量	URL	列表页_区域_建邺区_奥体	aoti
+409	获取点击数量	URL	列表页_区域_建邺区_奥体	aoti01
 410	获取点击数量	URL	列表页_区域_建邺区_应天西路	yingtianxilu
 411	获取点击数量	URL	列表页_区域_建邺区_集庆门	jiqingmen
 412	获取点击数量	URL	列表页_区域_建邺区_汉中门	hanzhongmen
@@ -594,7 +595,7 @@ if __name__ == '__main__':
 533	获取点击数量	URL	列表页_区域_吴中区_郭巷	guoxiang
 534	获取点击数量	URL	列表页_区域_吴中区_光福	guangfu
 535	获取点击数量	URL	列表页_区域_吴中区_横泾	hengjing
-536	获取点击数量	URL	列表页_区域_吴中区_开发区	kaifaqu
+536	获取点击数量	URL	列表页_区域_吴中区_开发区	kaifaqu2
 537	获取点击数量	URL	列表页_区域_吴中区_龙西	longxi
 538	获取点击数量	URL	列表页_区域_吴中区_甪直	luzhi
 539	获取点击数量	URL	列表页_区域_吴中区_临湖	linhu
@@ -627,4 +628,3 @@ if __name__ == '__main__':
 
 
     result = h.executemany(sql,args)
-    print(result)

@@ -1,5 +1,7 @@
 import os,sys
 import fire
+import pandas as pd
+
 try:
     from spark_env import SparkEnvironment
 
@@ -60,10 +62,53 @@ class Stat:
 
         # join 埋点详情
         burid_point_df = self.spark.load_from_mysql('page_click_buried_point').select('mark_type', 'event_name')
-        join = detail_split_df.join(burid_point_df, 'mark_type', 'left_outer').sort(['daystr','cityname','mark_type'],ascending=[1,1,1])
 
-        # 入库
-        self.spark.write_jdbc(join,'page_click_stat','append')
+
+
+
+        # 点击量为0的埋点数据统计
+        clicked_day_df = detail_split_df.select('daystr','mark_type').distinct()
+
+        day_list = list(clicked_day_df.select('daystr').distinct().toPandas()['daystr'])
+        burid_point_list = list(burid_point_df.select('mark_type').distinct().toPandas()['mark_type'])
+
+        z = [(x,y) for x in day_list for y in burid_point_list]
+
+
+        full_day_mark_cuple = self.spark.sqlctx.createDataFrame(z,['daystr','mark_type'])
+
+        zero_click_df = full_day_mark_cuple.subtract(clicked_day_df)
+        zero_click_df = self.spark.sqlctx.createDataFrame(zero_click_df.rdd.map(lambda x:[x[0],'',x[1],0]),['daystr','cityname','mark_type','click_count'])
+
+
+
+        # union--join event_name--sort--insert db
+        union = detail_split_df.unionAll(zero_click_df)\
+                    .join(burid_point_df, 'mark_type', 'left_outer')\
+                    .sort(['daystr', 'cityname', 'mark_type'], ascending=[1, 1, 1])
+
+
+        self.spark.write_jdbc(union, 'page_click_stat', 'append')
+
+
+    def stat_by_city(self,cityname,daystr):
+        stat_df = self.spark.load_from_mysql('page_click_stat').filter("cityname='%s'" % cityname).filter("daystr='%s'" % daystr)
+        buried_df = self.spark.load_from_mysql('local_buried').filter("cityname='%s'" % cityname).select('idx','event_name')
+
+        join = buried_df.join(stat_df,'event_name','left_outer')
+
+        def m(x):
+
+            mark_type = x['mark_type'] if x['mark_type'] is not None else ''
+            click_count = x['click_count'] if x['click_count'] is not None else 0
+
+            return x['idx'],daystr,cityname,mark_type,x['event_name'],click_count
+
+        rdd = join.rdd.map(m)
+
+        df = self.spark.sqlctx.createDataFrame(rdd,['idx','daystr','cityname','mark_type','event_name','click_count'])
+        self.spark.write_jdbc(df,'page_click_stat_report','append')
+
 
     def test(self):
         button_df = self.spark.load_from_mysql('online007_ctr').filter(
@@ -72,5 +117,11 @@ class Stat:
 
 if __name__ == '__main__':
 
-    fire.Fire(Stat)
+    #fire.Fire(Stat)
+    s = Stat()
+    s.stat_by_city('hz','2017-04-17')
+    s.stat_by_city('sh', '2017-04-17')
+    s.stat_by_city('nj', '2017-04-17')
+    s.stat_by_city('sz', '2017-04-17')
+
 
