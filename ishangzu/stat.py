@@ -60,31 +60,43 @@ class Stat:
         # group by 然后点击量求和
         detail_split_df = detail_split_df.groupBy(['daystr','cityname','mark_type']).sum('click_count').withColumnRenamed('sum(click_count)','click_count')
 
-        # join 埋点详情
-        burid_point_df = self.spark.load_from_mysql('page_click_buried_point').select('mark_type', 'event_name')
+        # 埋点详情
+        burid_point_df = self.spark.load_from_mysql('page_click_buried_point').select('mark_type', 'event_name','cityname')
 
 
 
 
         # 点击量为0的埋点数据统计
-        clicked_day_df = detail_split_df.select('daystr','mark_type').distinct()
+        clicked_day_df = detail_split_df.select('cityname','mark_type','daystr').distinct()
 
-        day_list = list(clicked_day_df.select('daystr').distinct().toPandas()['daystr'])
-        burid_point_list = list(burid_point_df.select('mark_type').distinct().toPandas()['mark_type'])
+        day_list = clicked_day_df.select('daystr','cityname').distinct()
 
-        z = [(x,y) for x in day_list for y in burid_point_list]
+        city_mark_day_zip_df = burid_point_df.select('mark_type', 'cityname').join(day_list,'cityname','left_outer')
+        """
+        +--------+---------+----------+
+        |cityname|mark_type|    daystr|
+        +--------+---------+----------+
+        |      sh|  huangpu|2017-04-14|
+        |      sh|  huangpu|2017-04-12|
+        |      sh|  huangpu|2017-04-16|
+        """
 
 
-        full_day_mark_cuple = self.spark.sqlctx.createDataFrame(z,['daystr','mark_type'])
+        # z = [(x,y[0],y[1]) for x in day_list for y in burid_point_list]
+        # print(z)
 
-        zero_click_df = full_day_mark_cuple.subtract(clicked_day_df)
-        zero_click_df = self.spark.sqlctx.createDataFrame(zero_click_df.rdd.map(lambda x:[x[0],'',x[1],0]),['daystr','cityname','mark_type','click_count'])
+
+        # full_day_mark_cuple = self.spark.sqlctx.createDataFrame(z,['daystr','mark_type'])
+        #
+        zero_click_df = city_mark_day_zip_df.subtract(clicked_day_df)
+        zero_click_df = self.spark.sqlctx.createDataFrame(zero_click_df.rdd.map(lambda x:[x['daystr'],x['cityname'],x['mark_type'],0]),
+                                                                                            ['daystr','cityname','mark_type','click_count'])
 
 
 
         # union--join event_name--sort--insert db
         union = detail_split_df.unionAll(zero_click_df)\
-                    .join(burid_point_df, 'mark_type', 'left_outer')\
+                    .join(burid_point_df, ['cityname','mark_type'], 'left_outer')\
                     .sort(['daystr', 'cityname', 'mark_type'], ascending=[1, 1, 1])
 
 
@@ -119,9 +131,6 @@ if __name__ == '__main__':
 
     #fire.Fire(Stat)
     s = Stat()
-    s.stat_by_city('hz','2017-04-17')
-    s.stat_by_city('sh', '2017-04-17')
-    s.stat_by_city('nj', '2017-04-17')
-    s.stat_by_city('sz', '2017-04-17')
+    s.stat()
 
 

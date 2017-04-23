@@ -7,7 +7,6 @@ except ImportError:
     sys.path.append(os.path.abspath('../'))
     from ishangzu.global_param import Global
 
-
 class Exporter:
     def __init__(self):
         self.wb = openpyxl.Workbook()
@@ -20,7 +19,14 @@ class Exporter:
 
         self.wb.remove_sheet(self.wb.get_sheet_by_name('Sheet'))
 
+
     def insert_sheet(self, sheet_name, data):
+        """
+        数据插入知道sheet
+        :param sheet_name: sheet名称
+        :param data: 数据源list（dict)
+        :return:
+        """
         sheet = self.sheets[sheet_name]
         sheet.append(['daystr', 'cityname', 'mark_type', 'event_name', 'click_count'])
         for l in data:
@@ -29,17 +35,16 @@ class Exporter:
 
 
     def get_data(self,daystr=None):
-        sql_dict = {'all' : "select * from page_click_stat",
+        """
+        根据日期获取各个城市数据
+        :param daystr:日期
+        :return: 数据
+        """
+        sql_dict = {'all' : "select * from page_click_stat where 1=1",
                     'hz': "select * from page_click_stat where cityname='hz'",
                     'sh': "select * from page_click_stat where cityname='sh'",
                     'nj': "select * from page_click_stat where cityname='nj'",
                     'sz': "select * from page_click_stat where cityname='sz'"}
-
-        zero_sql_dict ={
-                    'hz':"select distinct daystr,lb.cityname cityname,mark_type,lb.event_name event_name,click_count from local_buried lb join page_click_stat stat on lb.event_name = stat.event_name where stat.cityname='' and lb.cityname='hz'",
-                    'sh': "select distinct daystr,lb.cityname cityname,mark_type,lb.event_name event_name,click_count from local_buried lb join page_click_stat stat on lb.event_name = stat.event_name where stat.cityname='' and lb.cityname='sh'",
-                    'nj': "select distinct daystr,lb.cityname cityname,mark_type,lb.event_name event_name,click_count from local_buried lb join page_click_stat stat on lb.event_name = stat.event_name where stat.cityname='' and lb.cityname='nj'",
-                    'sz': "select distinct daystr,lb.cityname cityname,mark_type,lb.event_name event_name,click_count from local_buried lb join page_click_stat stat on lb.event_name = stat.event_name where stat.cityname='' and lb.cityname='sz'"}
 
         data_dict = dict()
         for k,v in sql_dict.items():
@@ -48,16 +53,15 @@ class Exporter:
             else:
                 data_dict[k] = Global.mysql_helper.fetchall(v+" and daystr='%s' order by daystr, cityname desc" % daystr)
 
-        for k,v in zero_sql_dict.items():
-            if daystr is None:
-                data_dict[k].extend(Global.mysql_helper.fetchall(v+' order by daystr, cityname desc'))
-            else:
-                data_dict[k].extend(Global.mysql_helper.fetchall(v+" and daystr='%s' order by daystr, cityname desc" % daystr))
-
         return data_dict
 
 
     def export(self,daystr=None):
+        """
+        导出到excel
+        :param daystr:
+        :return:
+        """
         data_dict = self.get_data(daystr)
         for sheet_name,data in data_dict.items():
             self.insert_sheet(sheet_name,data)
@@ -84,4 +88,4 @@ class Exporter:
 
 if __name__ == '__main__':
     exporter = Exporter()
-    exporter.export()
+    exporter.export(daystr='2017-04-16')

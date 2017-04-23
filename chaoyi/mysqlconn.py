@@ -2,17 +2,20 @@ import pymysql
 
 
 class MySQLHelper():
-    def __init__(self,db=''):
-        self.config = {'host': 'localhost',
-                  'user': 'root',
-                  'password': '123456',
-                  'port': 3306,
-                  'charset':'utf8',
-                  'database':db
+    def __init__(self,host,user,password,database,port=3306,charset='utf8',as_dict=True):
+        self.config = {'host': host,
+                  'user': user,
+                  'password': password,
+                  'port': port,
+                  'charset':charset,
+                  'database':database
                   }
 
         self.cnn = pymysql.connect(**self.config)
-        self.cur = self.cnn.cursor(pymysql.cursors.DictCursor)
+        if as_dict:
+            self.cur = self.cnn.cursor(pymysql.cursors.DictCursor)
+        else:
+            self.cur = self.cnn.cursor()
 
     def execute(self, sql, args=[]):
         self.cur.execute(sql, args)

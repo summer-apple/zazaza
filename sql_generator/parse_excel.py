@@ -51,11 +51,11 @@ class ExcelParser:
 
 
 
-                if column_name is not None:
+                if column_name is not None and column_name != 'BACK_TO_HEAD':
                     sql = sql + column_name.lower() +' '
 
                     # length
-                    if data_type.lower() in ('char','varchar','text','decimal'):
+                    if data_type.lower() in ('char','varchar','decimal'):
                         sql = sql +data_type+ '('+str(length)+') '
                     else:
                         sql = sql + data_type + ' '
@@ -96,6 +96,6 @@ class ExcelParser:
             self.mysql_helper.execute(sql)
 
 if __name__ == '__main__':
-    ep = ExcelParser('db_seekf','sql.xlsx')
+    ep = ExcelParser('db_chaoyi','sql.xlsx')
     ep.create_db()
     ep.create_table()
