@@ -2,7 +2,7 @@ import pymysql
 
 
 class MySQLHelper():
-    def __init__(self,host,user,password,database,port=3306,charset='utf8',as_dict=True):
+    def __init__(self,host,user,password,database='',port=3306,charset='utf8',as_dict=True):
         self.config = {'host': host,
                   'user': user,
                   'password': password,
