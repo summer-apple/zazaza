@@ -1,3 +1,6 @@
+# coding:utf-8
+
+
 import time, json,datetime
 from pykafka import KafkaClient
 
