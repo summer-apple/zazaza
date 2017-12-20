@@ -26,9 +26,9 @@ class Taobao():
 
         login_links.click()
         time.sleep(3.435)
-        self.driver.find_element_by_id('TPL_username_1').send_keys('15757135741')
+        self.driver.find_element_by_id('TPL_username_1').send_keys('00000000')
         time.sleep(2.323)
-        self.driver.find_element_by_id('TPL_password_1').send_keys('Xdddt3568a')
+        self.driver.find_element_by_id('TPL_password_1').send_keys('00000000')
 
         self.driver.find_element_by_id('J_SubmitStatic').click()
         time.sleep(10)
